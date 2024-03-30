@@ -45,6 +45,19 @@ public class MsgHeader implements Serializable {
      */
     private byte[] serializations;
 
+    /**
+     * 数据长度
+     */
+    private int msgLen;
+
+    public int getMsgLen() {
+        return msgLen;
+    }
+
+    public void setMsgLen(int msgLen) {
+        this.msgLen = msgLen;
+    }
+
     public short getMagic() {
         return magic;
     }

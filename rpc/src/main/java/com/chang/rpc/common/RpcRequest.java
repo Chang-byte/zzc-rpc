@@ -13,7 +13,11 @@ public class RpcRequest implements Serializable {
     private String serviceVersion;
     private String className;
     private String methodName;
-    private Object[] params;
+
+
+    private Object data;
+
+    private Class dataClass;
     private Class<?>[] parameterTypes;
     private Map<String, Object> serviceAttachments;
     private Map<String, Object> clientAttachments;
@@ -42,12 +46,20 @@ public class RpcRequest implements Serializable {
         this.methodName = methodName;
     }
 
-    public Object[] getParams() {
-        return params;
+    public Object getData() {
+        return data;
     }
 
-    public void setParams(Object[] params) {
-        this.params = params;
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public Class getDataClass() {
+        return dataClass;
+    }
+
+    public void setDataClass(Class dataClass) {
+        this.dataClass = dataClass;
     }
 
     public Class<?>[] getParameterTypes() {

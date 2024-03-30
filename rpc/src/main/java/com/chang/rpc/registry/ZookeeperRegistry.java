@@ -29,7 +29,7 @@ public class ZookeeperRegistry implements RegistryService {
     // 重试次数
     public static final int MAX_RETRIES = 3;
     // 跟路径
-    public static final String ZK_BASE_PATH = "/xhy_rpc";
+    public static final String ZK_BASE_PATH = "/zzc_rpc";
 
     private final ServiceDiscovery<ServiceMeta> serviceDiscovery;
 

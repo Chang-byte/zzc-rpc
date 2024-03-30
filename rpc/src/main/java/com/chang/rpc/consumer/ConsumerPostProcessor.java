@@ -3,6 +3,10 @@ package com.chang.rpc.consumer;
 import com.chang.rpc.annotation.RpcReference;
 import com.chang.rpc.config.RpcProperties;
 import com.chang.rpc.filter.ClientLogFilter;
+import com.chang.rpc.filter.FilterConfig;
+import com.chang.rpc.protocol.serialization.SerializationFactory;
+import com.chang.rpc.registry.RegistryFactory;
+import com.chang.rpc.router.LoadBalancerFactory;
 import com.chang.rpc.utils.PropertiesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,17 +43,26 @@ public class ConsumerPostProcessor implements BeanPostProcessor, EnvironmentAwar
     public void setEnvironment(Environment environment) {
         RpcProperties properties = RpcProperties.getInstance();
         PropertiesUtils.init(properties, environment);
-    }
-
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-
+        rpcProperties = properties;
+        logger.info("读取配置文件成功");
     }
 
 
     /**
-     * 代理层注入
+     * 初始化一些Bean
+     * @throws Exception
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        SerializationFactory.init();
+        RegistryFactory.init();
+        LoadBalancerFactory.init();
+        FilterConfig.initClientFilter();
+    }
+
+
+    /**
+     * 代理层注入， 就是对代理进行封装。
      *
      * @param bean
      * @param beanName

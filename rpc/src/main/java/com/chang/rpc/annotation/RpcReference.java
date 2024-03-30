@@ -12,6 +12,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface RpcReference {
 
+    /**
+     * 版本
+     * @return
+     */
     String serviceVersion() default "1.0";
 
     /**

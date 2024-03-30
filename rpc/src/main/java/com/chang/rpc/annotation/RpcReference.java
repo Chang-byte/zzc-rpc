@@ -1,5 +1,8 @@
 package com.chang.rpc.annotation;
 
+import com.chang.rpc.constants.FaultTolerantRules;
+import com.chang.rpc.constants.LoadBalancerRules;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -20,12 +23,12 @@ public @interface RpcReference {
     /**
      * 可选的负载均衡
      */
-    String loadBalancer();
+    String loadBalancer() default LoadBalancerRules.RoundRobin;
 
     /**
      * 可选的容错策略
      */
-    String faultTolerant();
+    String faultTolerant() default FaultTolerantRules.FailFast;
 
 
     /**

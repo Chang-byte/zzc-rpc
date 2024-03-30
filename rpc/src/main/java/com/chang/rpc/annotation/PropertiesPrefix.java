@@ -13,5 +13,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface PropertiesPrefix {
 
+    /**
+     * 注解的前缀
+     *
+     * @return
+     */
     String value();
 }

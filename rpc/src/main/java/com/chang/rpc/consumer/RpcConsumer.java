@@ -51,7 +51,7 @@ public class RpcConsumer {
     /**
      * 发送请求
      *
-     * @param protocol        消息
+     * @param protocol 消息
      * @param serviceMetadata 服务
      * @return 当前服务
      * @throws Exception

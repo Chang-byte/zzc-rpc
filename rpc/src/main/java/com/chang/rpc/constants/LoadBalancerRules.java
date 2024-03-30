@@ -7,7 +7,10 @@ package com.chang.rpc.constants;
  * @description 负载均衡策略
  */
 public interface LoadBalancerRules {
-
+    /**
+     * 一致性hash
+     */
+    String ConsistentHash = "consistentHash";
     String RoundRobin = "roundRobin";
 }
 

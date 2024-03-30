@@ -19,7 +19,7 @@ public class FilterData {
     private long retryCount;
     private String className;
     private String methodName;
-    private Object[] args;
+    private Object args;
 
     // 服务提供方的附加信息
     private Map<String, Object> serviceAttachments;
@@ -31,7 +31,7 @@ public class FilterData {
     private RpcResponse data;
 
     public FilterData(RpcRequest request) {
-        this.args = request.getParams();
+        this.args = request.getData();
         this.className = request.getClassName();
         this.methodName = request.getMethodName();
         this.serviceVersion = request.getServiceVersion();
@@ -53,8 +53,8 @@ public class FilterData {
 
     @Override
     public String toString() {
-        return "调用: Class: " + className + " Method: " + methodName + " args: " + Arrays.toString(args) + " Version: " + serviceVersion
-                + " Timeout: " + timeout + " ServiceAttachments: " + serviceAttachments +
+        return "调用: Class: " + className + " Method: " + methodName + " args: " + args +" Version: " + serviceVersion
+                +" Timeout: " + timeout +" ServiceAttachments: " + serviceAttachments +
                 " ClientAttachments: " + clientAttachments;
     }
 
@@ -98,7 +98,7 @@ public class FilterData {
         this.methodName = methodName;
     }
 
-    public Object[] getArgs() {
+    public Object getArgs() {
         return args;
     }
 

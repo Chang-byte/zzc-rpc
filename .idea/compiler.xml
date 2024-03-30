@@ -21,6 +21,10 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Test-Consumer" options="-parameters" />
+      <module name="Test-Interface" options="-parameters" />
+      <module name="Test-Provider01" options="-parameters" />
+      <module name="Test-Provider02" options="-parameters" />
       <module name="rpc" options="-parameters" />
     </option>
   </component>

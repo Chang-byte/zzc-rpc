@@ -4,6 +4,8 @@ import com.chang.rpc.common.*;
 import com.chang.rpc.config.RpcProperties;
 import com.chang.rpc.constants.MsgType;
 import com.chang.rpc.constants.ProtocolConstants;
+import com.chang.rpc.filter.FilterConfig;
+import com.chang.rpc.filter.FilterData;
 import com.chang.rpc.protocol.MsgHeader;
 import com.chang.rpc.protocol.RpcProtocol;
 import com.chang.rpc.router.LoadBalancer;
@@ -19,6 +21,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
+
+import static com.chang.rpc.constants.FaultTolerantRules.*;
 
 /**
  * @author Chang
@@ -82,6 +86,13 @@ public class RpcInvokerProxy implements InvocationHandler {
         request.setClientAttachments(RpcProperties.getInstance().getClientAttachments());
 
         // TODO 拦截器的实现
+        // 拦截器的上下文
+        final FilterData filterData = new FilterData(request);
+        try {
+            FilterConfig.getClientBeforeFilterChain().doFilter(filterData);
+        } catch (Throwable e) {
+            throw e;
+        }
 
         protocol.setBody(request);
 
@@ -126,9 +137,32 @@ public class RpcInvokerProxy implements InvocationHandler {
                 return rpcResponse.getData();
             } catch (Throwable e) {
                 // 重试处理，要根据策略来进行调整
+                String errorMsg = e.toString();
+                switch (faultTolerantType) {
+                    // 快速失败
+                    case FailFast:
+                        logger.warn("rpc 调用失败,触发 FailFast 策略,异常信息: {}", errorMsg);
+                        return rpcResponse.getException();
+                    // 故障转移
+                    case Failover:
+                        logger.warn("rpc 调用失败,第{}次重试,异常信息:{}", count, errorMsg);
+                        count++;
+                        if (!ObjectUtils.isEmpty(otherServiceMeta)) {
+                            final ServiceMeta next = otherServiceMeta.iterator().next();
+                            curServiceMeta = next;
+                            otherServiceMeta.remove(next);
+                        } else {
+                            final String msg = String.format("rpc 调用失败,无服务可用 serviceName: {%s}, 异常信息: {%s}", serviceName, errorMsg);
+                            logger.warn(msg);
+                            throw new RuntimeException(msg);
+                        }
+                        break;
+                    // 忽视这次错误
+                    case Failsafe:
+                        return null;
+                }
 
             }
-
         }
         throw new RuntimeException("rpc 调用失败");
     }

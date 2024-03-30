@@ -1,0 +1,2 @@
+consistentHash=com.chang.rpc.router.ConsistentHashLoadBalancer
+roundRobin=com.chang.rpc.router.RoundRobinLoadBalancer

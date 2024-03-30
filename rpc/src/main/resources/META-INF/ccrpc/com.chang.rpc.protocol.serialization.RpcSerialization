@@ -1,0 +1,2 @@
+json=com.chang.rpc.protocol.serialization.JsonSerialization
+hessian=com.chang.rpc.protocol.serialization.HessianSerialization

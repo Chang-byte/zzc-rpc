@@ -1,0 +1,2 @@
+redis=com.chang.rpc.registry.RedisRegistry
+zookeeper=com.chang.rpc.registry.ZookeeperRegistry
